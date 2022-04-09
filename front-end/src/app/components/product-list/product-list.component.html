@@ -13,6 +13,10 @@
           </div>
         </div>
 
+        <div *ngIf="list?.length == 0" role="alert" class="alert alert-warning col-md-12">
+          No products were found
+        </div>
+
       </div>
     </div>
   </div>
