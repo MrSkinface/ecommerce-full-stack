@@ -13,6 +13,10 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.url}/products/${id}`);
+  }
+
   listForCategory(categoryID: number): Observable<Product[]> {
     return this.getProducts(`${this.url}/products/search/findByCategoryId?id=${categoryID}`)
   }
