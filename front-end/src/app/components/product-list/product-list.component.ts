@@ -10,13 +10,20 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ProductListComponent implements OnInit {
 
+  private _defaultPageSize: number = 10;
+
+
+  get defaultPageSize(): number {
+    return this._defaultPageSize;
+  }
+
   list: Product[] = [];
   previousCategory: number = 1;
   currentCategory: number = 1;
 
   // pagination
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = this.defaultPageSize;
   totalSize: number = 0;
 
   constructor(private products: ProductService, private route: ActivatedRoute) { }
@@ -32,6 +39,7 @@ export class ProductListComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (query != null) {
       // search
+      this.currentPage = 1;
       this.products.searchProducts(this.currentPage -1, this.pageSize, query).subscribe(this.handleResult());
     } else {
       // list
@@ -54,5 +62,11 @@ export class ProductListComponent implements OnInit {
       this.pageSize = data.page.size;
       this.totalSize = data.page.totalElements;
     }
+  }
+
+  changePageSize(event: Event) {
+    this.pageSize = +(event.target as HTMLInputElement).value;
+    this.currentPage = 1;
+    this.handleList()
   }
 }

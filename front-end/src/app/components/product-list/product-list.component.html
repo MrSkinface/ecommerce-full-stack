@@ -29,15 +29,28 @@
           <div class="col-md-6"></div>
           <div class="col-md-6">
             <div class="row">
-              <div class="col-md-9" style="padding-left: 30%">
 
+              <div class="col-md-9" style="padding-left: 30%">
                 <ngb-pagination [(page)]="currentPage"
                                 [pageSize]="pageSize"
                                 [collectionSize]="totalSize"
+                                [maxSize]="5"
+                                [boundaryLinks]="true"
                                 (pageChange)="handleList()">
                 </ngb-pagination>
-
               </div>
+
+              <div class="col-md-3 mt-2" style="text-align: right">
+                <span class="mr-2">Page size </span>
+                <select (change)="changePageSize($event)">
+                  <option>5</option>
+                  <option selected="true">{{ defaultPageSize }}</option>
+                  <option>15</option>
+                  <option>20</option>
+                  <option>25</option>
+                </select>
+              </div>
+
             </div>
           </div>
         </div>
