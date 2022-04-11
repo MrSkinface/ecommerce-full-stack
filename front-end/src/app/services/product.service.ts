@@ -17,18 +17,12 @@ export class ProductService {
     return this.http.get<Product>(`${this.url}/products/${id}`);
   }
 
-  listForCategory(categoryID: number): Observable<Product[]> {
-    return this.getProducts(`${this.url}/products/search/findByCategoryId?id=${categoryID}`)
+  listProducts(page: number, size: number, categoryID: number): Observable<GetProductsResponse> {
+    return this.http.get<GetProductsResponse>(`${this.url}/products/search/findByCategoryId?id=${categoryID}&page=${page}&size=${size}`)
   }
 
-  search(query: string): Observable<Product[]> {
-    return this.getProducts(`${this.url}/products/search/findByNameContaining?name=${query}`)
-  }
-
-  getProducts(url: string): Observable<Product[]> {
-    return this.http.get<GetProductsResponse>(url).pipe(
-      map(response => response._embedded.products)
-    );
+  searchProducts(page: number, size: number, query: string): Observable<GetProductsResponse> {
+    return this.http.get<GetProductsResponse>(`${this.url}/products/search/findByNameContaining?name=${query}&page=${page}&size=${size}`)
   }
 
   categories(): Observable<Category[]> {
@@ -40,12 +34,17 @@ export class ProductService {
 
 interface GetProductsResponse {
   _embedded: {
-    products: Product[];
+    products: Product[]
+  },
+  page: {
+    number: number,
+    size: number,
+    totalElements: number
   }
 }
 
 interface GetCategoriesResponse {
   _embedded: {
-    categories: Category[];
+    categories: Category[]
   }
 }
