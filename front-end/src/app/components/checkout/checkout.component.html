@@ -161,7 +161,8 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select formControlName="type">
-                  <option>todo</option>
+                  <option>Visa</option>
+                  <option>Master Card</option>
                 </select>
               </div>
             </div>
@@ -216,6 +217,14 @@
             </div>
           </div>
 
+        </div>
+
+        <!-- order details -->
+        <div class="form-area">
+          <h3>Review Your Order</h3>
+          <p>Total Quantity: {{ totalQty }}</p>
+          <p><b>Shipping: FREE</b></p>
+          <p>Total Price: {{ totalPrice }}</p>
         </div>
 
         <!-- submit -->
