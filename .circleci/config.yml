@@ -29,7 +29,7 @@ jobs:
           command: mvn -f ./back-end/pom.xml test
 
   build-and-test-front-end:
-    working_directory: ~/e-commerce-full-stack/front-end
+    working_directory: ~/e-commerce-full-stack
     docker:
       - image: cimg/node:16.13.1-browsers
     steps:
@@ -48,7 +48,7 @@ jobs:
           key: ng-project-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test
+      - run: npm --prefix front-end run test
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
