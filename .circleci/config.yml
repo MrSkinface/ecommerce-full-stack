@@ -48,7 +48,7 @@ jobs:
           key: ng-project-{{ .Branch }}-{{ checksum "front-end/package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm --prefix front-end run test
+      - run: npm --prefix front-end run build
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
