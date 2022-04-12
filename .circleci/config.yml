@@ -42,10 +42,10 @@ jobs:
           name: Check install
       - checkout
       - restore_cache:
-          key: ng-project-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+          key: ng-project-{{ .Branch }}-{{ checksum "front-end/package-lock.json" }}
+      - run: npm --prefix front-end install
       - save_cache:
-          key: ng-project-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: ng-project-{{ .Branch }}-{{ checksum "front-end/package-lock.json" }}
           paths:
             - "node_modules"
       - run: npm --prefix front-end run test
