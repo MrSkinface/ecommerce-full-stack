@@ -29,7 +29,7 @@ jobs:
           command: mvn -f ./back-end/pom.xml test
 
   build-and-test-front-end:
-    working_directory: ./front-end/
+    working_directory: ~/front-end
     docker:
       - image: cimg/node:16.13.1-browsers
     steps:
