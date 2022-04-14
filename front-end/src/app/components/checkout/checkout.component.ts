@@ -5,6 +5,7 @@ import {Observable, of} from "rxjs";
 import {Country} from "../../common/country";
 import {CountryService} from "../../services/country.service";
 import {State} from "../../common/state";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'app-checkout',
@@ -26,7 +27,8 @@ export class CheckoutComponent implements OnInit {
   billingStates: State[] = [];
 
   constructor(private builder: FormBuilder,
-              private countryService: CountryService) { }
+              private countryService: CountryService,
+              private cart: CartService) { }
 
   ngOnInit(): void {
     this.formGroup = this.builder.group({
@@ -95,6 +97,8 @@ export class CheckoutComponent implements OnInit {
         expirationYear: ['']
       })
     });
+    this.cart.count.subscribe(data => this.totalQty = data);
+    this.cart.amount.subscribe(data => this.totalPrice = data);
     // credit card drop-down options
     CheckoutComponent.getCCMonths().subscribe(data => this.ccMonths = data);
     CheckoutComponent.getCCYears().subscribe(data => this.ccYears = data);
