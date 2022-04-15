@@ -13,6 +13,11 @@ export class CartService {
 
   constructor() { }
 
+  resetCart() {
+    this.items = [];
+    this.calculateAndPublishTotals();
+  }
+
   addToCart(item: CartItem) {
     let existing: CartItem | undefined = this.items.find(el => el.product.id === item.product.id);
     if (existing) {
@@ -20,7 +25,7 @@ export class CartService {
     } else {
       this.items.push(item);
     }
-    this.calculateTotals();
+    this.calculateAndPublishTotals();
   }
 
   decrQty(item: CartItem) {
@@ -28,7 +33,7 @@ export class CartService {
     if (item.quantity == 0) {
       this.removeFromCart(item);
     } else {
-      this.calculateTotals();
+      this.calculateAndPublishTotals();
     }
   }
 
@@ -37,10 +42,10 @@ export class CartService {
       if (el.product.id === item.product.id)
         this.items.splice(index, 1);
     })
-    this.calculateTotals();
+    this.calculateAndPublishTotals();
   }
 
-  calculateTotals() {
+  calculateAndPublishTotals() {
     let count: number = 0;
     let amount: number = 0;
     for (const item of this.items) {

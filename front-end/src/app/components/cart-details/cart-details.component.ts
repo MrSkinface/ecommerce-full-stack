@@ -26,7 +26,7 @@ export class CartDetailsComponent implements OnInit {
       this.totalAmount = data;
     });
 
-    this.cart.calculateTotals();
+    this.cart.calculateAndPublishTotals();
   }
 
   decrQty(item: CartItem) {

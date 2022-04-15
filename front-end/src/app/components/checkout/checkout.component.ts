@@ -6,6 +6,11 @@ import {Country} from "../../common/country";
 import {CountryService} from "../../services/country.service";
 import {State} from "../../common/state";
 import {CartService} from "../../services/cart.service";
+import {CheckoutService} from "../../services/checkout.service";
+import {Router} from "@angular/router";
+import {Order} from "../../common/order";
+import {OrderItem} from "../../common/order-item";
+import {Purchase} from "../../common/purchase";
 
 @Component({
   selector: 'app-checkout',
@@ -28,7 +33,9 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private builder: FormBuilder,
               private countryService: CountryService,
-              private cart: CartService) { }
+              private cart: CartService,
+              private checkout: CheckoutService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.formGroup = this.builder.group({
@@ -129,8 +136,6 @@ export class CheckoutComponent implements OnInit {
   get ccName() { return this.formGroup.get('creditCard.nameOnCard'); }
   get ccNumber() { return this.formGroup.get('creditCard.number'); }
   get ccCvv() { return this.formGroup.get('creditCard.cvv'); }
-  get ccExpMonth() { return this.formGroup.get('creditCard.expirationMonth'); }
-  get ccExpYear() { return this.formGroup.get('creditCard.expirationYear'); }
 
   invalid(control: AbstractControl | null): boolean {
     if (control == null) return false;
@@ -138,17 +143,40 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Handling submit form');
     if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
+      return;
     }
-    console.log(this.formGroup.get('customer')?.value);
-    console.log(this.shippingStreet?.errors)
+
+    // order
+    let order = new Order(this.totalQty, this.totalPrice);
+    // items
+    let items = this.cart.items.map(item => new OrderItem(item));
+    // customer
+    let customer = this.formGroup.controls['customer'].value;
+    // shipping address
+    let shippingAddress = this.formGroup.controls['shippingAddress'].value;
+    // billing address
+    let billingAddress = this.formGroup.controls['billingAddress'].value;
+    // purchase
+    let purchase = new Purchase(customer, shippingAddress, billingAddress, order, items);
+
+    this.checkout.placeOrder(purchase).subscribe({
+      next: response => {
+        alert(`Order have been successfully saved./n Tracking UUID: ${response.trackingUUID}`);
+        this.cart.resetCart();
+        this.formGroup.reset();
+        this.router.navigateByUrl('/products');
+      },
+      error: err => {
+        alert(`ERROR: ${err.message}`);
+      }
+    });
   }
 
 
 
-  copyAdressShippingToBilling(event: Event) {
+  copyAddressShippingToBilling(event: Event) {
     if ((event.target as HTMLInputElement).checked) {
       this.formGroup.controls['billingAddress'].setValue(this.formGroup.controls['shippingAddress'].value);
       this.billingStates = this.shippingStates;
