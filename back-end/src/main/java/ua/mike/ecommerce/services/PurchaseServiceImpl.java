@@ -44,7 +44,8 @@ public class PurchaseServiceImpl implements PurchaseService {
                         purchase.getBillingAddress().getCity(),
                         purchase.getBillingAddress().getStreet(),
                         purchase.getBillingAddress().getZip())
-                .orElse(purchase.getBillingAddress()));
+                .orElse(purchase.getBillingAddress().equals(purchase.getShippingAddress()) ?
+                        purchase.getShippingAddress() : purchase.getBillingAddress()));
         purchase.getItems().forEach(item -> {
             item.setOrder(order);
             order.getItems().add(item);

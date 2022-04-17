@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -15,7 +16,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
     private String city;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "country_id", nullable = false)
@@ -33,27 +34,20 @@ public class Address {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Address address)) return false;
 
-        Address address = (Address) o;
-
-        if (!id.equals(address.id)) return false;
-        if (!city.equals(address.city)) return false;
-        if (!country.equals(address.country)) return false;
-        if (!state.equals(address.state)) return false;
-        if (!street.equals(address.street)) return false;
-        return zip.equals(address.zip);
+        if (address.id > 0 && this.id > 0)
+            return address.id == this.id;
+        else
+            return city.equals(address.city) &&
+                    ((country == null && address.country == null) || (country != null && address.country != null && country.getId() == address.country.getId())) &&
+                    ((state == null && address.state == null) || (state != null && address.state != null && state.getId() == address.state.getId())) &&
+                    street.equals(address.street) &&
+                    zip.equals(address.zip);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + city.hashCode();
-        result = 31 * result + country.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + street.hashCode();
-        result = 31 * result + zip.hashCode();
-        return result;
+        return Objects.hash(id, city, country, state, street, zip);
     }
 }
