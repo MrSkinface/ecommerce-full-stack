@@ -11,7 +11,16 @@ export class CartService {
   count: Subject<number> = new BehaviorSubject<number>(0);
   amount: Subject<number> = new BehaviorSubject<number>(0);
 
-  constructor() { }
+  storage: Storage = sessionStorage;
+
+  constructor() {
+    // read from browser session storage
+    let data = this.storage.getItem("cartItems");
+    if (data) {
+      this.items = JSON.parse(data);
+      this.calculateAndPublishTotals();
+    }
+  }
 
   resetCart() {
     this.items = [];
@@ -55,5 +64,7 @@ export class CartService {
     // publish
     this.count.next(count);
     this.amount.next(amount);
+    // save to browser's session storage
+    this.storage.setItem("cartItems", JSON.stringify(this.items));
   }
 }
