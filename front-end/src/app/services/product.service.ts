@@ -3,30 +3,29 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {Product} from "../common/product";
 import {Category} from "../common/category";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private url: string = "http://localhost:8080/api";
-
   constructor(private http: HttpClient) { }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.url}/products/${id}`);
+    return this.http.get<Product>(`${environment.apiBaseUrl}/products/${id}`);
   }
 
   listProducts(page: number, size: number, categoryID: number): Observable<GetProductsResponse> {
-    return this.http.get<GetProductsResponse>(`${this.url}/products/search/findByCategoryId?id=${categoryID}&page=${page}&size=${size}`)
+    return this.http.get<GetProductsResponse>(`${environment.apiBaseUrl}/products/search/findByCategoryId?id=${categoryID}&page=${page}&size=${size}`)
   }
 
   searchProducts(page: number, size: number, query: string): Observable<GetProductsResponse> {
-    return this.http.get<GetProductsResponse>(`${this.url}/products/search/findByNameContaining?name=${query}&page=${page}&size=${size}`)
+    return this.http.get<GetProductsResponse>(`${environment.apiBaseUrl}/products/search/findByNameContaining?name=${query}&page=${page}&size=${size}`)
   }
 
   categories(): Observable<Category[]> {
-    return this.http.get<GetCategoriesResponse>(`${this.url}/product-category`).pipe(
+    return this.http.get<GetCategoriesResponse>(`${environment.apiBaseUrl}/product-category`).pipe(
       map(response => response._embedded.categories)
     );
   }
