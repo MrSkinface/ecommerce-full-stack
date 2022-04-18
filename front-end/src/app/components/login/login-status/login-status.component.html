@@ -5,12 +5,12 @@
   </ng-container>
 
   <ng-template #signout>
-    <div  *ngIf="name$ | async as name" class="login-status-user-info">
-      Welcome back {{ name }}!
+    <div  *ngIf="customer" class="login-status-user-info">
+      Welcome back {{ customer.firstName + ' ' + customer.lastName }}!
     </div>
     <button (click)="logout()" class="security-btn">Logout</button>
+    <button routerLink="/members" class="security-btn">Member</button>
+    <button routerLink="/orders-history" class="security-btn">Orders</button>
   </ng-template>
-
-  <button routerLink="/members" class="security-btn">Member</button>
 
 </div>

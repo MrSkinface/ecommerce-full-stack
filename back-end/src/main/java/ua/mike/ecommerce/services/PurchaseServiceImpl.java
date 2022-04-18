@@ -25,11 +25,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public PurchaseResponse placeOrder(Purchase purchase) {
         final var order = purchase.getOrder();
         order.setTrackingNumber(UUID.randomUUID().toString());
-        final var customer = customerRepo.search(
-                purchase.getCustomer().getFirstName(),
-                purchase.getCustomer().getLastName(),
-                purchase.getCustomer().getEmail()
-        ).orElse(purchase.getCustomer());
+        final var customer = customerRepo.byEmail(purchase.getCustomer().getEmail()).orElse(purchase.getCustomer());
         customer.getOrders().add(order);
         order.setCustomer(customer);
         order.setShippingAddress(

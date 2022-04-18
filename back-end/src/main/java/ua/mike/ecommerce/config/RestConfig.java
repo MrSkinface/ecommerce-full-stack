@@ -5,10 +5,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import ua.mike.ecommerce.models.Category;
-import ua.mike.ecommerce.models.Country;
-import ua.mike.ecommerce.models.Product;
-import ua.mike.ecommerce.models.State;
+import ua.mike.ecommerce.models.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Type;
@@ -31,7 +28,7 @@ public class RestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         cors.addMapping(config.getBasePath() + "/**").allowedOrigins("*");
-        this.disableMethods(config, Set.of(Product.class, Category.class, Country.class, State.class));
+        this.disableMethods(config, Set.of(Product.class, Category.class, Country.class, State.class, Order.class));
         // expose all primary keys
         config.exposeIdsFor(
                 entityManager.getMetamodel()

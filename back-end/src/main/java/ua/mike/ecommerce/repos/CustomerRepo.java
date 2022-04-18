@@ -8,11 +8,9 @@ import ua.mike.ecommerce.models.Customer;
 
 import java.util.Optional;
 
-@RepositoryRestResource(exported = false)
+@RepositoryRestResource
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
-    @Query(value = "SELECT * FROM customer WHERE first_name = :firstName AND last_name = :lastName AND email = :email", nativeQuery = true)
-    Optional<Customer> search(@Param("firstName") String firstName,
-                              @Param("lastName") String lastName,
-                              @Param("email") String email);
+    @Query(value = "SELECT * FROM customer WHERE email = :email", nativeQuery = true)
+    Optional<Customer> byEmail(@Param("email") String email);
 }
