@@ -31,6 +31,8 @@ export class CheckoutComponent implements OnInit {
   shippingStates: State[] = [];
   billingStates: State[] = [];
 
+  storage: Storage = sessionStorage;
+
   constructor(private builder: FormBuilder,
               private countryService: CountryService,
               private cart: CartService,
@@ -38,19 +40,22 @@ export class CheckoutComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    const data = this.storage.getItem('customer');
+    const customer = data ? JSON.parse(data) : undefined;
+
     this.formGroup = this.builder.group({
       customer: this.builder.group({
-        firstName: new FormControl('', [
+        firstName: new FormControl(customer?.firstName, [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        lastName: new FormControl('', [
+        lastName: new FormControl(customer?.lastName, [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        email: new FormControl('', [Validators.required,
+        email: new FormControl(customer?.email, [Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
       shippingAddress: this.builder.group({

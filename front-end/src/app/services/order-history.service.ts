@@ -13,7 +13,8 @@ export class OrderHistoryService {
   constructor(private http: HttpClient) { }
 
   getOrdersHistory(customerID: number, page: number, size: number): Observable<GetOrdersHistoryResponse> {
-    return this.http.get<GetOrdersHistoryResponse>(`${this.url}/search/findByCustomerId?id=${customerID}&page=${page}&size=${size}`)
+    return this.http.get<GetOrdersHistoryResponse>(`${this.url}/search/findByCustomerId` +
+    `?id=${customerID}&page=${page}&size=${size}&sort=dateCreated,desc`)
   }
 
 }
