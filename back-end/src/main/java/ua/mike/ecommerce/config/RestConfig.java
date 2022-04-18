@@ -30,6 +30,7 @@ public class RestConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins("*");
         this.disableMethods(config, Set.of(Product.class, Category.class, Country.class, State.class));
         // expose all primary keys
         config.exposeIdsFor(

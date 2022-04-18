@@ -5,7 +5,6 @@ import ua.mike.ecommerce.dto.Purchase;
 import ua.mike.ecommerce.dto.PurchaseResponse;
 import ua.mike.ecommerce.services.PurchaseService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/checkout")
 public class PurchaseController {
