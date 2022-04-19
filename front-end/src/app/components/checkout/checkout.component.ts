@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Validators as ExValidators} from "../checkout/validators";
-import {Observable, of} from "rxjs";
 import {Country} from "../../common/country";
 import {CountryService} from "../../services/country.service";
 import {State} from "../../common/state";
@@ -11,6 +10,8 @@ import {Router} from "@angular/router";
 import {Order} from "../../common/order";
 import {OrderItem} from "../../common/order-item";
 import {Purchase} from "../../common/purchase";
+import {environment} from "../../../environments/environment";
+import {PaymentInfo} from "../../common/payment-info";
 
 @Component({
   selector: 'app-checkout',
@@ -19,13 +20,16 @@ import {Purchase} from "../../common/purchase";
 })
 export class CheckoutComponent implements OnInit {
 
+  // stripe api
+  stripe = Stripe(environment.stripePublicKey);
+  paymentInfo: PaymentInfo = new PaymentInfo();
+  cardElement: any;
+  displayError: any = '';
+
   totalQty: number = 0;
   totalPrice: number = 0;
   formGroup!: FormGroup;
 
-  // credit card drop-down options
-  ccMonths: number[] = [];
-  ccYears: number[] = [];
   // country/states drop-down options
   countries: Country[] = [];
   shippingStates: State[] = [];
@@ -42,6 +46,19 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     const data = this.storage.getItem('customer');
     const customer = data ? JSON.parse(data) : undefined;
+
+    // stripe elements
+    var elements = this.stripe.elements();
+    this.cardElement = elements.create('card', { hidePostalCode: true });
+    this.cardElement.mount('#card-element');
+    this.cardElement.on('change', (event: { complete: any; error: { message: any; }; }) => {
+      this.displayError = document.getElementById('card-errors');
+      if (event.complete) {
+        this.displayError.textContent = "";
+      } else if (event.error) {
+        this.displayError.textContent = event.error.message;
+      }
+    });
 
     this.formGroup = this.builder.group({
       customer: this.builder.group({
@@ -96,24 +113,10 @@ export class CheckoutComponent implements OnInit {
         state: new FormControl('', Validators.required),
         country: new FormControl('', Validators.required)
       }),
-      creditCard: this.builder.group({
-        type: new FormControl('', Validators.required),
-        nameOnCard: new FormControl('', [
-          Validators.required,
-          Validators.minLength(2),
-          ExValidators.blank
-        ]),
-        number: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
-        cvv: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
-        expirationMonth: [''],
-        expirationYear: ['']
-      })
+      creditCard: this.builder.group({})
     });
     this.cart.count.subscribe(data => this.totalQty = data);
     this.cart.amount.subscribe(data => this.totalPrice = data);
-    // credit card drop-down options
-    CheckoutComponent.getCCMonths().subscribe(data => this.ccMonths = data);
-    CheckoutComponent.getCCYears().subscribe(data => this.ccYears = data);
     // country/states drop-down options
     this.countryService.getCountries().subscribe(
       data => this.countries = data
@@ -137,46 +140,59 @@ export class CheckoutComponent implements OnInit {
   get billingCountry() { return this.formGroup.get('billingAddress.country'); }
   get billingZip() { return this.formGroup.get('billingAddress.zip'); }
 
-  get ccType() { return this.formGroup.get('creditCard.type'); }
-  get ccName() { return this.formGroup.get('creditCard.nameOnCard'); }
-  get ccNumber() { return this.formGroup.get('creditCard.number'); }
-  get ccCvv() { return this.formGroup.get('creditCard.cvv'); }
-
   invalid(control: AbstractControl | null): boolean {
     if (control == null) return false;
     return control.invalid && (control.dirty || control.touched);
   }
 
   onSubmit() {
-    if (this.formGroup.invalid) {
+    if (!this.formGroup.invalid && this.displayError.textContent === "") {
+      let order = new Order(this.totalQty, this.totalPrice);
+      let items = this.cart.items.map(item => new OrderItem(item));
+      let customer = this.formGroup.controls['customer'].value;
+      let shippingAddress = this.formGroup.controls['shippingAddress'].value;
+      let billingAddress = this.formGroup.controls['billingAddress'].value;
+      let purchase = new Purchase(customer, shippingAddress, billingAddress, order, items);
+
+      // stripe payment
+      this.paymentInfo.amount = Math.round(this.totalPrice * 100);
+      this.paymentInfo.currency = 'USD';
+
+      this.checkout.createPaymentIntent(this.paymentInfo).subscribe(
+        (paymentIntentResponse) => {
+          this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
+            {
+              payment_method: {
+                card: this.cardElement
+              }
+            }, { handleActions: false }).then(function(result: { error: { message: any; }; }) {
+              if (result.error) {
+                alert(`There was an error: ${result.error.message}`);
+              } else {
+                // @ts-ignore
+                this.checkout.placeOrder(purchase).subscribe({
+                  next: (response: { trackingUUID: any; }) => {
+                    alert(`Your order has been received.\nOrder tracking number: ${response.trackingUUID}`);
+                    // reset cart
+                    // @ts-ignore
+                    this.cart.resetCart();
+                    // @ts-ignore
+                    this.formGroup.reset();
+                    // @ts-ignore
+                    this.router.navigateByUrl('/products');
+                  },
+                  error: (err: { message: any; }) => {
+                    alert(`There was an error: ${err.message}`);
+                  }
+                })
+              }
+            }.bind(this));
+        }
+      );
+    } else {
       this.formGroup.markAllAsTouched();
       return;
     }
-
-    // order
-    let order = new Order(this.totalQty, this.totalPrice);
-    // items
-    let items = this.cart.items.map(item => new OrderItem(item));
-    // customer
-    let customer = this.formGroup.controls['customer'].value;
-    // shipping address
-    let shippingAddress = this.formGroup.controls['shippingAddress'].value;
-    // billing address
-    let billingAddress = this.formGroup.controls['billingAddress'].value;
-    // purchase
-    let purchase = new Purchase(customer, shippingAddress, billingAddress, order, items);
-
-    this.checkout.placeOrder(purchase).subscribe({
-      next: response => {
-        alert(`Order have been successfully saved./n Tracking UUID: ${response.trackingUUID}`);
-        this.cart.resetCart();
-        this.formGroup.reset();
-        this.router.navigateByUrl('/products');
-      },
-      error: err => {
-        alert(`ERROR: ${err.message}`);
-      }
-    });
   }
 
 
@@ -189,31 +205,6 @@ export class CheckoutComponent implements OnInit {
       this.formGroup.controls['billingAddress'].reset();
       this.billingStates = [];
     }
-  }
-
-  handleCCYearChange() {
-    let selectedYear = +this.formGroup.get('creditCard')?.value.expirationYear;
-    let currYear = new Date().getFullYear();
-    let startMonthFrom = undefined;
-    if (selectedYear != currYear) startMonthFrom = 1;
-    CheckoutComponent.getCCMonths(startMonthFrom).subscribe(data => this.ccMonths = data);
-  }
-
-  private static getCCMonths(startMonth?: number): Observable<number[]> {
-    let months: number[] = [];
-    for (let i = startMonth ? startMonth : new Date().getMonth() + 1; i <= 12; i++) {
-      months.push(i);
-    }
-    return of(months);
-  }
-
-  private static getCCYears(): Observable<number[]> {
-    let years: number[] = [];
-    let currentYear = new Date().getFullYear();
-    for (let i = 0; i < 10; i++) {
-      years.push(currentYear + i);
-    }
-    return of(years);
   }
 
   getStates(formGroupName: string) {

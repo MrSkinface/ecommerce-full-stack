@@ -1,13 +1,22 @@
 package ua.mike.ecommerce.services;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ua.mike.ecommerce.dto.PaymentInfo;
 import ua.mike.ecommerce.dto.Purchase;
 import ua.mike.ecommerce.dto.PurchaseResponse;
 import ua.mike.ecommerce.repos.AddressRepo;
 import ua.mike.ecommerce.repos.CustomerRepo;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
+
+import static ua.mike.ecommerce.services.PurchaseServiceImpl.StripeParams.*;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -15,9 +24,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final CustomerRepo customerRepo;
     private final AddressRepo addressRepo;
 
-    public PurchaseServiceImpl(CustomerRepo customerRepo, AddressRepo addressRepo) {
+    public PurchaseServiceImpl(CustomerRepo customerRepo,
+                               AddressRepo addressRepo,
+                               @Value("${stripe.key.secret}") String secretKey) {
         this.customerRepo = customerRepo;
         this.addressRepo = addressRepo;
+        Stripe.apiKey = secretKey;
     }
 
     @Override
@@ -48,5 +60,18 @@ public class PurchaseServiceImpl implements PurchaseService {
         });
         this.customerRepo.save(customer);
         return new PurchaseResponse(order.getTrackingNumber());
+    }
+
+    @Override
+    public PaymentIntent createStripePayment(PaymentInfo info) throws StripeException {
+        return PaymentIntent.create(Map.of(
+                amount.name(), info.getAmount(),
+                currency.name(), info.getCurrency(),
+                payment_method_types.name(), Collections.singletonList("card")
+        ));
+    }
+
+    enum StripeParams {
+        amount, currency, payment_method_types
     }
 }

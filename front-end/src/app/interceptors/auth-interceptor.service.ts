@@ -10,7 +10,8 @@ import {OKTA_AUTH} from "@okta/okta-angular";
 export class AuthInterceptorService implements HttpInterceptor {
 
   private protectedEndpoints = [
-    'http://localhost:8080/api/orders'
+    'http://localhost:8080/api/orders',
+    'https://localhost:8443/api/orders'
   ];
 
   constructor(@Inject(OKTA_AUTH) private auth: OktaAuth) { }
@@ -27,7 +28,4 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
     return next.handle(request);
   }
-
-
-
 }
