@@ -67,11 +67,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         return PaymentIntent.create(Map.of(
                 amount.name(), info.getAmount(),
                 currency.name(), info.getCurrency(),
+                receipt_email.name(), info.getReceiptEmail(),
                 payment_method_types.name(), Collections.singletonList("card")
         ));
     }
 
     enum StripeParams {
-        amount, currency, payment_method_types
+        amount, currency, payment_method_types, receipt_email
     }
 }

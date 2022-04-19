@@ -161,6 +161,7 @@ export class CheckoutComponent implements OnInit {
       // stripe payment
       this.paymentInfo.amount = Math.round(this.totalPrice * 100);
       this.paymentInfo.currency = 'USD';
+      this.paymentInfo.receiptEmail = customer.email;
 
       this.checkout.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
