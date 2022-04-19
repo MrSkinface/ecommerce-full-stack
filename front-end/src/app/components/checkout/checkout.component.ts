@@ -37,6 +37,9 @@ export class CheckoutComponent implements OnInit {
 
   storage: Storage = sessionStorage;
 
+  // purchase button
+  isEnabled: boolean = true;
+
   constructor(private builder: FormBuilder,
               private countryService: CountryService,
               private cart: CartService,
@@ -147,6 +150,7 @@ export class CheckoutComponent implements OnInit {
 
   onSubmit() {
     if (!this.formGroup.invalid && this.displayError.textContent === "") {
+      this.isEnabled = false;
       let order = new Order(this.totalQty, this.totalPrice);
       let items = this.cart.items.map(item => new OrderItem(item));
       let customer = this.formGroup.controls['customer'].value;
@@ -168,6 +172,8 @@ export class CheckoutComponent implements OnInit {
             }, { handleActions: false }).then(function(result: { error: { message: any; }; }) {
               if (result.error) {
                 alert(`There was an error: ${result.error.message}`);
+                // @ts-ignore
+                this.isEnabled = true;
               } else {
                 // @ts-ignore
                 this.checkout.placeOrder(purchase).subscribe({
@@ -180,9 +186,13 @@ export class CheckoutComponent implements OnInit {
                     this.formGroup.reset();
                     // @ts-ignore
                     this.router.navigateByUrl('/products');
+                    // @ts-ignore
+                    this.isEnabled = true;
                   },
                   error: (err: { message: any; }) => {
                     alert(`There was an error: ${err.message}`);
+                    // @ts-ignore
+                    this.isEnabled = true;
                   }
                 })
               }
