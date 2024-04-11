@@ -10,8 +10,7 @@ executors:
       platform: "linux/amd64"
 jobs:
   build-and-test-back-end:
-    docker:
-      - image: cimg/openjdk:17.0
+    executor: machine_executor_amd64
     steps:
       - checkout
       - run:
@@ -47,5 +46,4 @@ workflows:
   e-commetce-full-stack-build:
     jobs:
       - build-and-test-back-end:
-          executor: machine_executor_amd64
       - build-and-test-front-end
