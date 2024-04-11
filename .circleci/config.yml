@@ -4,7 +4,7 @@ orbs:
 jobs:
   build-and-test-back-end:
     docker:
-      - image: circleci/maven@1.3.0
+      - image: cimg/base:2024.02
     steps:
       - checkout
       - run:
