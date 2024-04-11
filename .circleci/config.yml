@@ -1,16 +1,10 @@
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.8
-executors:
-  machine_executor_amd64:
-    machine:
-      image: ubuntu-2204:2022.04.2
-    environment:
-      architecture: "amd64"
-      platform: "linux/amd64"
 jobs:
   build-and-test-back-end:
-    executor: machine_executor_amd64
+    docker:
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - run:
@@ -45,5 +39,5 @@ jobs:
 workflows:
   e-commetce-full-stack-build:
     jobs:
-      - build-and-test-back-end:
+      - build-and-test-back-end
       - build-and-test-front-end
