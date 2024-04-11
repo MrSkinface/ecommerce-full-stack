@@ -11,7 +11,7 @@ import ua.mike.ecommerce.dto.PurchaseResponse;
 import ua.mike.ecommerce.repos.AddressRepo;
 import ua.mike.ecommerce.repos.CustomerRepo;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;

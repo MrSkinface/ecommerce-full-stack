@@ -1,0 +1,28 @@
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: ./ssl-localhost/keystore.p12
+    key-store-type: PKCS12
+    key-alias: localhost
+    key-store-password: password
+    key-password: password
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/full-stack-ecommerce
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      #debug hibernate queries
+      hibernate.show_sql: false
+      hibernate.use_sql_comments: true
+      hibernate.format_sql: true
+
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.xml
+
+stripe:
+  key:
+    secret: sk_test_51KqDHzL2GnG3YK41SfKrzcYHQEf2X4mFDfMy3GX6y6fNXPWkGvL0chnINwRrC1ejewTIUAIRaZUr9Jjlulh1Zhh300yrhHWIzd

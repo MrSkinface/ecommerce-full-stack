@@ -3,7 +3,7 @@ package ua.mike.ecommerce.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_item")
