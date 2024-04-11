@@ -4,15 +4,12 @@ orbs:
 jobs:
   build-and-test-back-end:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: circleci/maven@1.3.0
     steps:
       - checkout
       - run:
-          name: Build
-          command: mvn -B -f ./back-end/pom.xml -DskipTests clean package
-      - run:
-          name: Test
-          command: mvn -f ./back-end/pom.xml test
+          name: Verify
+          command: mvn -B -f ./back-end/pom.xml clean verify
 
   build-and-test-front-end:
     working_directory: ~/e-commerce-full-stack
