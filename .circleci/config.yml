@@ -5,6 +5,11 @@ jobs:
   verify-back-end:
     docker:
       - image: cimg/openjdk:17.0
+      - image: postgres:15.0-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: full-stack-ecommerce
     steps:
       - checkout
       - run:
