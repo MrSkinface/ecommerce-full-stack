@@ -1,14 +1,12 @@
-package ua.mike.ecommerce.repos;
+package ua.mike.ecommerce.persistence.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.RequestParam;
-import ua.mike.ecommerce.models.Product;
+import ua.mike.ecommerce.persistence.entity.Product;
 
-@RepositoryRestResource
-public interface ProductRepo extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategoryId(@RequestParam("id") long id, Pageable pageable);
 

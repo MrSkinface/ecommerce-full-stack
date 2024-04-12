@@ -2,10 +2,10 @@ package ua.mike.ecommerce.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import ua.mike.ecommerce.models.Address;
-import ua.mike.ecommerce.models.Customer;
-import ua.mike.ecommerce.models.Order;
-import ua.mike.ecommerce.models.OrderItem;
+import ua.mike.ecommerce.persistence.entity.Address;
+import ua.mike.ecommerce.persistence.entity.Customer;
+import ua.mike.ecommerce.persistence.entity.Order;
+import ua.mike.ecommerce.persistence.entity.OrderItem;
 
 import java.util.Set;
 
