@@ -1,4 +1,4 @@
-package ua.mike.ecommerce.models;
+package ua.mike.ecommerce.persistence.entity;
 
 import lombok.Data;
 
