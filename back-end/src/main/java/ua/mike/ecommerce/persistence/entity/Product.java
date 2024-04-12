@@ -1,37 +1,40 @@
 package ua.mike.ecommerce.persistence.entity;
 
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "product")
+@Table
 @Data
-public class Product {
+@Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@ToString(callSuper = true)
+public class Product extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(nullable = false)
     private String sku;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String description;
-    @Column(name = "unit_price")
+
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal unitPrice;
-    @Column(name = "image_url")
-    private String imgUrl;
+
+    private String imageUrl;
+
     private boolean active;
-    @Column(name = "units_in_stock")
+
+    @Column(nullable = false)
     private int unitsInStock;
-    @Column(name = "date_created")
-    @CreationTimestamp
-    private LocalDateTime dateCreated;
-    @Column(name = "last_updated")
-    @UpdateTimestamp
-    private LocalDateTime dateUpdated;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

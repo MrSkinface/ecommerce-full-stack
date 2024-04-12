@@ -1,45 +1,32 @@
 package ua.mike.ecommerce.persistence.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.*;
+import lombok.experimental.SuperBuilder;
+
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@Table
+@Data
 @Entity
-@Table(name = "customer")
-@Getter
-@Setter
-public class Customer {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@ToString(callSuper = true)
+public class Customer extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "first_name")
+    @Column(nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+
+    @Column(nullable = false)
     private String lastName;
+
     private String email;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<Order> orders = new HashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Customer)) return false;
-        Customer customer = (Customer) o;
-        if (this.id > 0) {
-            return this.id == customer.id;
-        } else {
-            return firstName.equalsIgnoreCase(customer.firstName) &&
-                    lastName.equalsIgnoreCase(customer.lastName) &&
-                    email.equalsIgnoreCase(customer.email);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id, this.firstName, this.lastName, this.email);
-    }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8443
+  port: 8008
 
 spring:
   datasource:
@@ -7,6 +7,10 @@ spring:
     username: postgres
     password: postgres
   jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       #debug hibernate queries
       hibernate.show_sql: false
