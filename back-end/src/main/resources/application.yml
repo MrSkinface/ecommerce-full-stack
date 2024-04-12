@@ -19,3 +19,17 @@ spring:
 
   liquibase:
     change-log: classpath:liquibase/changelog-master.xml
+
+# swagger / springdoc
+springdoc:
+  swagger-ui:
+    path: /swagger
+    display-request-duration: true
+  default-produces-media-type: application/json
+  api-docs:
+    path: /api-docs
+
+# logging
+logging:
+  level:
+    ua.mike: trace
