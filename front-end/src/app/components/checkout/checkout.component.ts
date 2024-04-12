@@ -10,7 +10,6 @@ import {Router} from "@angular/router";
 import {Order} from "../../common/order";
 import {OrderItem} from "../../common/order-item";
 import {Purchase} from "../../common/purchase";
-import {environment} from "../../../environments/environment";
 import {PaymentInfo} from "../../common/payment-info";
 
 @Component({
@@ -20,8 +19,6 @@ import {PaymentInfo} from "../../common/payment-info";
 })
 export class CheckoutComponent implements OnInit {
 
-  // stripe api
-  stripe = Stripe(environment.stripePublicKey);
   paymentInfo: PaymentInfo = new PaymentInfo();
   cardElement: any;
   displayError: any = '';
@@ -49,19 +46,6 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     const data = this.storage.getItem('customer');
     const customer = data ? JSON.parse(data) : undefined;
-
-    // stripe elements
-    var elements = this.stripe.elements();
-    this.cardElement = elements.create('card', { hidePostalCode: true });
-    this.cardElement.mount('#card-element');
-    this.cardElement.on('change', (event: { complete: any; error: { message: any; }; }) => {
-      this.displayError = document.getElementById('card-errors');
-      if (event.complete) {
-        this.displayError.textContent = "";
-      } else if (event.error) {
-        this.displayError.textContent = event.error.message;
-      }
-    });
 
     this.formGroup = this.builder.group({
       customer: this.builder.group({
@@ -158,46 +142,31 @@ export class CheckoutComponent implements OnInit {
       let billingAddress = this.formGroup.controls['billingAddress'].value;
       let purchase = new Purchase(customer, shippingAddress, billingAddress, order, items);
 
-      // stripe payment
       this.paymentInfo.amount = Math.round(this.totalPrice * 100);
       this.paymentInfo.currency = 'USD';
       this.paymentInfo.receiptEmail = customer.email;
 
       this.checkout.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
-          this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
-            {
-              payment_method: {
-                card: this.cardElement
-              }
-            }, { handleActions: false }).then(function(result: { error: { message: any; }; }) {
-              if (result.error) {
-                alert(`There was an error: ${result.error.message}`);
-                // @ts-ignore
-                this.isEnabled = true;
-              } else {
-                // @ts-ignore
-                this.checkout.placeOrder(purchase).subscribe({
-                  next: (response: { trackingUUID: any; }) => {
-                    alert(`Your order has been received.\nOrder tracking number: ${response.trackingUUID}`);
-                    // reset cart
-                    // @ts-ignore
-                    this.cart.resetCart();
-                    // @ts-ignore
-                    this.formGroup.reset();
-                    // @ts-ignore
-                    this.router.navigateByUrl('/products');
-                    // @ts-ignore
-                    this.isEnabled = true;
-                  },
-                  error: (err: { message: any; }) => {
-                    alert(`There was an error: ${err.message}`);
-                    // @ts-ignore
-                    this.isEnabled = true;
-                  }
-                })
-              }
-            }.bind(this));
+          this.checkout.placeOrder(purchase).subscribe({
+            next: (response: { trackingUUID: any; }) => {
+              alert(`Your order has been received.\nOrder tracking number: ${response.trackingUUID}`);
+              // reset cart
+              // @ts-ignore
+              this.cart.resetCart();
+              // @ts-ignore
+              this.formGroup.reset();
+              // @ts-ignore
+              this.router.navigateByUrl('/products');
+              // @ts-ignore
+              this.isEnabled = true;
+            },
+            error: (err: { message: any; }) => {
+              alert(`There was an error: ${err.message}`);
+              // @ts-ignore
+              this.isEnabled = true;
+            }
+          })
         }
       );
     } else {

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --ssl=true --sslKey=../ssl-localhost/localhost.key --sslCert=../ssl-localhost/localhost.cer",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -20,14 +20,10 @@
     "@angular/router": "~13.3.0",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@ng-bootstrap/ng-bootstrap": "^12.0.2",
-    "@okta/okta-angular": "5.1",
-    "@okta/okta-auth-js": "6.0",
-    "@okta/okta-signin-widget": "^6.2.1",
     "@popperjs/core": "^2.11.5",
     "@types/popper.js": "^1.11.0",
     "bootstrap": "^5.1.3",
     "rxjs": "~7.5.0",
-    "stripe": "^8.218.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://localhost:8443/api',
-  stripePublicKey: 'pk_test_51KqDHzL2GnG3YK41w2Ff5COlZGJ4B6TfDtGQZsuE2EPgDSX7lPdmXyhJJN0Tc0riVLax6AVgZF37gxPt77i0YovC00lCe00E9E'
+  apiBaseUrl: 'http://localhost:8008/api' // todo move base path & port to envs
 };
 
 /*

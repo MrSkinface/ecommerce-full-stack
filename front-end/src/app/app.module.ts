@@ -14,27 +14,13 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from "@angular/forms";
-import { LoginComponent } from './components/login/login.component';
-import { LoginStatusComponent } from './components/login/login-status/login-status.component';
 
-import {OKTA_CONFIG, OktaAuthGuard, OktaAuthModule, OktaCallbackComponent} from "@okta/okta-angular";
-import {OktaAuth} from "@okta/okta-auth-js";
-import appConfig from "./config/app-config";
 import { MembersPageComponent } from './components/members-page/members-page.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
-import { AuthInterceptorService } from "./interceptors/auth-interceptor.service";
-
-const oktaAuth = new OktaAuth({
-  issuer: appConfig.oidc.issuer,
-  clientId: appConfig.oidc.clientId,
-  redirectUri: appConfig.oidc.redirectUri
-});
 
 const routes: Routes = [
-  {path: 'orders-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
-  {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},
-  {path:'login/callback', component: OktaCallbackComponent},
-  {path:'login', component: LoginComponent},
+  {path: 'orders-history', component: OrderHistoryComponent},
+  {path: 'members', component: MembersPageComponent},
   {path:'search/:query', component: ProductListComponent},
   {path: 'category/:id', component: ProductListComponent},
   {path: 'category', component: ProductListComponent},
@@ -56,8 +42,6 @@ const routes: Routes = [
     CartStatusComponent,
     CartDetailsComponent,
     CheckoutComponent,
-    LoginComponent,
-    LoginStatusComponent,
     MembersPageComponent,
     OrderHistoryComponent
   ],
@@ -66,20 +50,10 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgbModule,
-    OktaAuthModule
+    NgbModule
   ],
   providers: [
-    ProductService,
-    {
-      provide: OKTA_CONFIG,
-      useValue: { oktaAuth }
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
-    }
+    ProductService
   ],
   bootstrap: [AppComponent]
 })

@@ -6,8 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import java.util.Collections;
 
 /**
  * Created by mike on 11.04.2024 12:50
@@ -17,10 +18,20 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfiguration configuration) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(withDefaults())
+                .cors(cors -> cors.configurationSource(request -> configuration))
                 .build();
+    }
+
+    @Bean
+    public CorsConfiguration configuration() {
+        final var all = Collections.singletonList(CorsConfiguration.ALL);
+        final var configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(all);
+        configuration.setAllowedMethods(all);
+        configuration.setAllowedHeaders(all);
+        return configuration;
     }
 }
