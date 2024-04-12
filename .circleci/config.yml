@@ -1,23 +1,20 @@
 version: 2.1
 orbs:
-  browser-tools: circleci/browser-tools@1.2.3
+  browser-tools: circleci/browser-tools@1.4.8
 jobs:
-  build-and-test-back-end:
+  verify-back-end:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
       - run:
-          name: Build
-          command: mvn -B -f ./back-end/pom.xml -DskipTests clean package
-      - run:
-          name: Test
-          command: mvn -f ./back-end/pom.xml test
+          name: Verify
+          command: mvn -B -f ./back-end/pom.xml clean verify
 
-  build-and-test-front-end:
+  verify-front-end:
     working_directory: ~/e-commerce-full-stack
     docker:
-      - image: cimg/node:16.13.1-browsers
+      - image: cimg/node:18.20.1-browsers
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -39,5 +36,5 @@ jobs:
 workflows:
   e-commetce-full-stack-build:
     jobs:
-      - build-and-test-back-end
-      - build-and-test-front-end
+      - verify-back-end
+      - verify-front-end
