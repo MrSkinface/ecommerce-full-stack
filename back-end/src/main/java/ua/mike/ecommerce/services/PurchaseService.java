@@ -1,34 +1,21 @@
 package ua.mike.ecommerce.services;
 
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.mike.ecommerce.dto.PaymentInfo;
 import ua.mike.ecommerce.dto.Purchase;
 import ua.mike.ecommerce.dto.PurchaseResponse;
 import ua.mike.ecommerce.persistence.repository.AddressRepository;
 import ua.mike.ecommerce.persistence.repository.CustomerRepository;
 
 import jakarta.transaction.Transactional;
-import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
-import static ua.mike.ecommerce.services.PurchaseService.StripeParams.*;
-
 @Service
+@RequiredArgsConstructor
 public class PurchaseService {
 
     private final CustomerRepository customerRepo;
     private final AddressRepository addressRepo;
-
-    public PurchaseService(CustomerRepository customerRepo, AddressRepository addressRepo, @Value("${stripe.key.secret}") String secretKey) {
-        this.customerRepo = customerRepo;
-        this.addressRepo = addressRepo;
-        Stripe.apiKey = secretKey;
-    }
 
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
@@ -57,18 +44,5 @@ public class PurchaseService {
         });
         this.customerRepo.save(customer);
         return new PurchaseResponse(order.getTrackingNumber());
-    }
-
-    public PaymentIntent createStripePayment(PaymentInfo info) throws StripeException {
-        return PaymentIntent.create(Map.of(
-                amount.name(), info.getAmount(),
-                currency.name(), info.getCurrency(),
-                receipt_email.name(), info.getReceiptEmail(),
-                payment_method_types.name(), Collections.singletonList("card")
-        ));
-    }
-
-    enum StripeParams {
-        amount, currency, payment_method_types, receipt_email
     }
 }
