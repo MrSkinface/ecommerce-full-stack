@@ -1,6 +1,5 @@
 package ua.mike.ecommerce.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -29,17 +28,14 @@ public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_address_id")
-    @JsonIgnore
     private Address billingAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonIgnore
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_address_id")
-    @JsonIgnore
     private Address shippingAddress;
 
     @Column(nullable = false)

@@ -1,4 +1,4 @@
-package ua.mike.ecommerce.dto;
+package ua.mike.ecommerce.web.dto;
 
 import lombok.Data;
 

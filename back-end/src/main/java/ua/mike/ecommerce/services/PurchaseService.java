@@ -2,8 +2,8 @@ package ua.mike.ecommerce.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.mike.ecommerce.dto.Purchase;
-import ua.mike.ecommerce.dto.PurchaseResponse;
+import ua.mike.ecommerce.web.dto.Purchase;
+import ua.mike.ecommerce.web.dto.PurchaseResponse;
 import ua.mike.ecommerce.persistence.repository.AddressRepository;
 import ua.mike.ecommerce.persistence.repository.CustomerRepository;
 

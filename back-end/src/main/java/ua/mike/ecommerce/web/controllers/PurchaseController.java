@@ -1,14 +1,16 @@
-package ua.mike.ecommerce.controllers;
+package ua.mike.ecommerce.web.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.mike.ecommerce.dto.Purchase;
-import ua.mike.ecommerce.dto.PurchaseResponse;
+import ua.mike.ecommerce.web.dto.Purchase;
+import ua.mike.ecommerce.web.dto.PurchaseResponse;
 import ua.mike.ecommerce.services.PurchaseService;
 
+import static ua.mike.ecommerce.Constants.API_VERSION;
+
 @RestController
-@RequestMapping("/api/checkout")
+@RequestMapping(API_VERSION + "/checkout")
 @RequiredArgsConstructor
 public class PurchaseController {
 

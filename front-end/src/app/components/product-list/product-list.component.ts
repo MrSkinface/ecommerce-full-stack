@@ -61,10 +61,10 @@ export class ProductListComponent implements OnInit {
   private handleResult() {
     // @ts-ignore
     return data => {
-      this.list = data._embedded.products;
-      this.currentPage = data.page.number + 1;
-      this.pageSize = data.page.size;
-      this.totalSize = data.page.totalElements;
+      this.list = data.content;
+      this.currentPage = data.number + 1;
+      this.pageSize = data.size;
+      this.totalSize = data.totalElements;
     }
   }
 

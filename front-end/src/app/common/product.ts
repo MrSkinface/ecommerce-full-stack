@@ -5,9 +5,9 @@ export class Product {
   name!: string;
   description!: string;
   unitPrice!: number;
-  imgUrl!: string;
+  imageUrl!: string;
   active!: boolean;
   unitsInStock!: number;
   dateCreated!: Date;
-  dateUpdated!: Date;
+  lastUpdated!: Date;
 }
