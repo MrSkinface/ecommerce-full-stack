@@ -6,9 +6,6 @@ import org.zalando.logbook.Correlation;
 import org.zalando.logbook.HttpLogWriter;
 import org.zalando.logbook.Precorrelation;
 
-/**
- * Created by mike on 14.03.2024 14:54
- */
 @Slf4j
 @Component
 public class InfoLevelHttpLogWriter implements HttpLogWriter {

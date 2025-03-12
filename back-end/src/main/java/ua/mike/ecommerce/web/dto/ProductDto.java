@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * Created by mike on 12.04.2024 16:58
- */
 @Data
 @Builder
 @NoArgsConstructor

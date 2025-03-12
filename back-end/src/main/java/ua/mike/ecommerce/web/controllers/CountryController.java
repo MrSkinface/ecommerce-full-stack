@@ -1,7 +1,10 @@
 package ua.mike.ecommerce.web.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ua.mike.ecommerce.persistence.repository.CountryRepository;
 import ua.mike.ecommerce.persistence.repository.StateRepository;
 import ua.mike.ecommerce.web.dto.CountryDto;
@@ -14,9 +17,6 @@ import java.util.stream.Collectors;
 
 import static ua.mike.ecommerce.Constants.API_VERSION;
 
-/**
- * Created by mike on 12.04.2024 16:56
- */
 @RestController
 @RequestMapping(API_VERSION + "countries")
 @RequiredArgsConstructor

@@ -6,7 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ua.mike.ecommerce.persistence.entity.Product;
 import ua.mike.ecommerce.persistence.repository.CategoryRepository;
 import ua.mike.ecommerce.persistence.repository.ProductRepository;
@@ -21,9 +25,6 @@ import java.util.stream.Collectors;
 
 import static ua.mike.ecommerce.Constants.API_VERSION;
 
-/**
- * Created by mike on 12.04.2024 16:56
- */
 @RestController
 @RequestMapping(API_VERSION + "products")
 @RequiredArgsConstructor
@@ -65,6 +66,6 @@ public class ProductController {
     public ProductDto getProduct(@PathVariable @Positive Long id) {
         return productRepository.findById(id)
                 .map(productMapper::convert)
-                .orElseThrow(() -> new NotFoundException("Product with id %s not found".formatted(id)));
+                .orElseThrow(() -> new NotFoundException(id));
     }
 }

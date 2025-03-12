@@ -1,8 +1,3 @@
 package ua.mike.ecommerce.web.dto;
 
-import lombok.Data;
-
-@Data
-public class PurchaseResponse {
-    private final String trackingUUID;
-}
+public record PurchaseResponse(String trackingUUID) { }

@@ -12,17 +12,25 @@ spring:
     url: jdbc:postgresql://localhost:5432/full-stack-ecommerce
     username: postgres
     password: postgres
+    hikari:
+      pool-name: "db-pool"
+      maximum-pool-size: 20
   jpa:
     hibernate:
       ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-    properties:
-      #debug hibernate queries
-      hibernate.show_sql: false
-      hibernate.use_sql_comments: true
-      hibernate.format_sql: true
     open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    redis:
+      use-key-prefix: true
+      key-prefix: "cache_"
+      enable-statistics: true
+      time-to-live: 5m
 
   liquibase:
     change-log: classpath:liquibase/changelog-master.xml
@@ -55,7 +63,12 @@ management:
 # logging
 logging:
   level:
-    ua.mike: trace
+    ua:
+      mike: trace
+    net:
+      ttddyy:
+        dsproxy:
+          listener: debug
 
 logbook:
   format:

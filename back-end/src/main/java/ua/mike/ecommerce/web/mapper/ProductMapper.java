@@ -5,9 +5,6 @@ import org.mapstruct.MappingConstants;
 import ua.mike.ecommerce.persistence.entity.Product;
 import ua.mike.ecommerce.web.dto.ProductDto;
 
-/**
- * Created by mike on 13.04.2024 14:21
- */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 

@@ -12,7 +12,7 @@ import {CartItem} from "../../common/cart-item";
 })
 export class ProductListComponent implements OnInit {
 
-  private _defaultPageSize: number = 10;
+  private readonly _defaultPageSize: number = 10;
 
 
   get defaultPageSize(): number {
@@ -28,9 +28,9 @@ export class ProductListComponent implements OnInit {
   pageSize: number = this.defaultPageSize;
   totalSize: number = 0;
 
-  constructor(private products: ProductService,
-              private cart: CartService,
-              private route: ActivatedRoute) { }
+  constructor(private readonly products: ProductService,
+              private readonly cart: CartService,
+              private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
