@@ -76,3 +76,5 @@ logbook:
   predicate:
     exclude:
       - path: /actuator**
+      - path: ${springdoc.api-docs.path}**
+      - path: ${springdoc.swagger-ui.path}**
