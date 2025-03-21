@@ -14,14 +14,11 @@ export class ProductListComponent implements OnInit {
 
   private readonly _defaultPageSize: number = 10;
 
-
   get defaultPageSize(): number {
     return this._defaultPageSize;
   }
 
   list: Product[] = [];
-  previousCategory: number = 1;
-  currentCategory: number = 1;
 
   // pagination
   currentPage: number = 1;
@@ -41,20 +38,14 @@ export class ProductListComponent implements OnInit {
   handleList() {
     const query = this.route.snapshot.paramMap.get('query');
     const id = this.route.snapshot.paramMap.get('id');
-    if (query != null) {
+    if (query != null || id == null) {
       // search
-      this.currentPage = 1;
-      this.products.searchProducts(this.currentPage -1, this.pageSize, query).subscribe(this.handleResult());
+      this.products.searchProducts(this.currentPage -1, this.pageSize, query)
+          .subscribe(this.handleResult());
     } else {
       // list
-      if (id != null) this.currentCategory = +id;
-
-      if (this.previousCategory != this.currentCategory) {
-        this.currentPage = 1;
-      }
-      this.previousCategory = this.currentCategory;
-
-      this.products.listProducts(this.currentPage -1, this.pageSize, this.currentCategory).subscribe(this.handleResult());
+      this.products.listProducts(this.currentPage -1, this.pageSize, +id)
+          .subscribe(this.handleResult());
     }
   }
 
