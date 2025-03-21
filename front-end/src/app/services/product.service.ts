@@ -20,8 +20,8 @@ export class ProductService {
     return this.http.get<GetProductsResponse>(`${environment.apiBaseUrl}/products?category_id=${categoryID}&page=${page}&size=${size}`)
   }
 
-  searchProducts(page: number, size: number, query: string): Observable<GetProductsResponse> {
-    return this.http.get<GetProductsResponse>(`${environment.apiBaseUrl}/products?name=${query}&page=${page}&size=${size}`)
+  searchProducts(page: number, size: number, query: string | null): Observable<GetProductsResponse> {
+    return this.http.get<GetProductsResponse>(`${environment.apiBaseUrl}/products?name=${query ?? ""}&page=${page}&size=${size}`)
   }
 
   categories(): Observable<Category[]> {
