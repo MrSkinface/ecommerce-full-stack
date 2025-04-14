@@ -1,0 +1,11 @@
+<div class="login-status-header">
+
+    <asl-google-signin-button type='standard' size='large' shape="circle" theme="filled_blue" text="continue_with" *ngIf="!isLoggedIn">Sign in with Google</asl-google-signin-button>
+
+    <div *ngIf="isLoggedIn" class="login-status-user-info">
+        Welcome, {{ user.email }}
+        <button routerLink="/orders-history" class="au-btn-submit">Orders</button>
+        <button (click)="signOut()" class="au-btn-submit">Sign Out</button>
+    </div>
+
+</div>
