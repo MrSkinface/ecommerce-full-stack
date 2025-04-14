@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Validators as ExValidators} from "../checkout/validators";
 import {Country} from "../../common/country";
 import {CountryService} from "../../services/country.service";
@@ -13,9 +13,10 @@ import {Purchase} from "../../common/purchase";
 import {PaymentInfo} from "../../common/payment-info";
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css'],
+    standalone: false
 })
 export class CheckoutComponent implements OnInit {
 
@@ -25,7 +26,7 @@ export class CheckoutComponent implements OnInit {
 
   totalQty: number = 0;
   totalPrice: number = 0;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
   // country/states drop-down options
   countries: Country[] = [];
@@ -37,7 +38,7 @@ export class CheckoutComponent implements OnInit {
   // purchase button
   isEnabled: boolean = true;
 
-  constructor(private builder: FormBuilder,
+  constructor(private builder: UntypedFormBuilder,
               private countryService: CountryService,
               private cart: CartService,
               private checkout: CheckoutService,
@@ -49,56 +50,56 @@ export class CheckoutComponent implements OnInit {
 
     this.formGroup = this.builder.group({
       customer: this.builder.group({
-        firstName: new FormControl(customer?.firstName, [
+        firstName: new UntypedFormControl(customer?.firstName, [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        lastName: new FormControl(customer?.lastName, [
+        lastName: new UntypedFormControl(customer?.lastName, [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        email: new FormControl(customer?.email, [Validators.required,
+        email: new UntypedFormControl(customer?.email, [Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
       shippingAddress: this.builder.group({
-        street: new FormControl('', [
+        street: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        city: new FormControl('', [
+        city: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        zip: new FormControl('', [
+        zip: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        state: new FormControl('', Validators.required),
-        country: new FormControl('', Validators.required)
+        state: new UntypedFormControl('', Validators.required),
+        country: new UntypedFormControl('', Validators.required)
       }),
       billingAddress: this.builder.group({
-        street: new FormControl('', [
+        street: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        city: new FormControl('', [
+        city: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        zip: new FormControl('', [
+        zip: new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           ExValidators.blank
         ]),
-        state: new FormControl('', Validators.required),
-        country: new FormControl('', Validators.required)
+        state: new UntypedFormControl('', Validators.required),
+        country: new UntypedFormControl('', Validators.required)
       }),
       creditCard: this.builder.group({})
     });

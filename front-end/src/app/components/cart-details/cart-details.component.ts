@@ -3,9 +3,10 @@ import {CartItem} from "../../common/cart-item";
 import {CartService} from "../../services/cart.service";
 
 @Component({
-  selector: 'cart-details',
-  templateUrl: './cart-details.component.html',
-  styleUrls: ['./cart-details.component.css']
+    selector: 'cart-details',
+    templateUrl: './cart-details.component.html',
+    styleUrls: ['./cart-details.component.css'],
+    standalone: false
 })
 export class CartDetailsComponent implements OnInit {
 
