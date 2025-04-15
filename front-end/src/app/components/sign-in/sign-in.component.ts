@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
+import {SocialAuthService} from "@abacritt/angularx-social-login";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
     selector: 'app-sign-in',
@@ -9,30 +10,29 @@ import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 })
 export class SignInComponent implements OnInit {
 
-    user!: SocialUser;
-    isLoggedIn!: boolean;
-
-
-    constructor(private readonly authService: SocialAuthService) {
+    constructor(private readonly socialAuthService: SocialAuthService, private readonly authService: AuthService) {
     }
 
+    isLoggedIn!: boolean;
+    userEmail!: string | undefined;
+
     ngOnInit(): void {
-        this.authService.authState.subscribe((user) => {
-            this.user = user;
-            this.isLoggedIn = !!user;
-            console.table(user);
-            this.handleAuthentication();
+        this.socialAuthService.authState.subscribe((user) => {
+            if (user) {
+                this.authService.authenticate(user.idToken).subscribe(data => {
+                    this.authService.setAuthData(user.idToken, data);
+                    this.isLoggedIn = !!data;
+                    this.userEmail = data.email;
+                });
+            }
         });
     }
 
-    signOut(): void {
-        this.authService.signOut();
-    }
 
-    private handleAuthentication() {
-        if (this.isLoggedIn) {
-            // todo
-            console.info("Api call to sync auth")
-        }
+    signOut(): void {
+        this.socialAuthService.signOut();
+        this.authService.removeAuthData();
+        this.isLoggedIn = false;
+        this.userEmail = undefined;
     }
 }

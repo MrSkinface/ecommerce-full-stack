@@ -9,9 +9,9 @@ import { environment } from "../../environments/environment";
 })
 export class CustomerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
-  getCustomer(email?: string): Observable<Customer> {
-    return this.http.get<Customer>(`${environment.apiBaseUrl}/customers/search/byEmail?email=${email}`);
+  authorizeCustomer(token: string): Observable<Customer> {
+    return this.http.post<Customer>(`${environment.apiBaseUrl}/customers/authorize`, null, {headers: {'x-auth-token': token}});
   }
 }
