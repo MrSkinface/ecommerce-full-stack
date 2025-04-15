@@ -133,7 +133,7 @@ export class CheckoutComponent implements OnInit {
                     alert(`Your order has been received.\nOrder tracking number: ${response.trackingUUID}`);
                     // reset cart
                     // @ts-ignore
-                    this.cart.resetCart();
+                    this.cartService.resetCart();
                     // @ts-ignore
                     this.formGroup.reset();
                     // @ts-ignore
