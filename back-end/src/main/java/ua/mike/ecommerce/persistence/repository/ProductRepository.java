@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
     @Override @NonNull @Cacheable
-    Optional<Product> findById(@NonNull Long categoryId);
+    Optional<Product> findById(@NonNull Long productId);
 }

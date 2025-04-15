@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderHistory} from "../../common/order-history";
-import {OrderHistoryService} from "../../services/order-history.service";
+import {OrdersService} from "../../services/orders.service";
 
 @Component({
     selector: 'app-order-history',
@@ -18,7 +18,7 @@ export class OrderHistoryComponent implements OnInit {
     pageSize = this.defaultPageSize;
     totalSize = 0;
 
-    constructor(private readonly orderHistoryService: OrderHistoryService) {
+    constructor(private readonly ordersService: OrdersService) {
     }
 
     ngOnInit(): void {
@@ -26,7 +26,7 @@ export class OrderHistoryComponent implements OnInit {
     }
 
     handleList() {
-        this.orderHistoryService.getOrdersHistory(this.currentPage - 1, this.pageSize).subscribe(data => {
+        this.ordersService.getOrdersHistory(this.currentPage - 1, this.pageSize).subscribe(data => {
             this.orders = data.content;
             this.currentPage = data.number + 1;
             this.pageSize = data.size;
