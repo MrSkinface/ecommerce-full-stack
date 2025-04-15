@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SocialAuthService} from "@abacritt/angularx-social-login";
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-sign-in',
@@ -10,7 +11,9 @@ import {AuthService} from "../../services/auth.service";
 })
 export class SignInComponent implements OnInit {
 
-    constructor(private readonly socialAuthService: SocialAuthService, private readonly authService: AuthService) {
+    constructor(private readonly socialAuthService: SocialAuthService,
+                private readonly authService: AuthService,
+                private readonly router: Router) {
     }
 
     isLoggedIn!: boolean;
@@ -23,6 +26,7 @@ export class SignInComponent implements OnInit {
                     this.authService.setAuthData(user.idToken, data);
                     this.isLoggedIn = !!data;
                     this.userEmail = data.email;
+                    this.router.navigateByUrl('/');
                 });
             }
         });
