@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
             request = request.clone({
                 setHeaders: {
                     // @ts-ignore
-                    'x-auth-token': this.authService.getAuthData().authToken
+                    'x-customer-token': this.authService.getAuthData().authToken
                 }
             });
         }

@@ -12,6 +12,6 @@ export class CustomerService {
   constructor(private readonly http: HttpClient) { }
 
   authorizeCustomer(token: string): Observable<Customer> {
-    return this.http.post<Customer>(`${environment.apiBaseUrl}/customers/authorize`, null, {headers: {'x-auth-token': token}});
+    return this.http.post<Customer>(`${environment.apiBaseUrl}/customers/authorize`, null, {headers: {'x-customer-token': token}});
   }
 }
