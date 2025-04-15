@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OrderHistory} from "../../common/order-history";
 import {OrderHistoryService} from "../../services/order-history.service";
 
@@ -10,37 +10,33 @@ import {OrderHistoryService} from "../../services/order-history.service";
 })
 export class OrderHistoryComponent implements OnInit {
 
-  orders: OrderHistory[] = [];
-  storage: Storage = sessionStorage;
-  // pagination
-  // pagination
-  defaultPageSize = 10;
-  currentPage = 1;
-  pageSize = this.defaultPageSize;
-  totalSize = 0;
+    orders: OrderHistory[] = [];
 
-  constructor(private history: OrderHistoryService) { }
+    // pagination
+    defaultPageSize = 10;
+    currentPage = 1;
+    pageSize = this.defaultPageSize;
+    totalSize = 0;
 
-  ngOnInit(): void {
-    this.handleList();
-  }
-
-  handleList() {
-    const data = this.storage.getItem('customer');
-    if (data) {
-      const customer = JSON.parse(data);
-      this.history.getOrdersHistory(customer.id, this.currentPage -1, this.pageSize).subscribe(result => {
-        this.orders = result._embedded.orders;
-        this.currentPage = result.page.number + 1;
-        this.pageSize = result.page.size;
-        this.totalSize = result.page.totalElements;
-      });
+    constructor(private readonly orderHistoryService: OrderHistoryService) {
     }
-  }
 
-  changePageSize(event: Event) {
-    this.pageSize = +(event.target as HTMLInputElement).value;
-    this.currentPage = 1;
-    this.handleList()
-  }
+    ngOnInit(): void {
+        this.handleList();
+    }
+
+    handleList() {
+        this.orderHistoryService.getOrdersHistory(this.currentPage - 1, this.pageSize).subscribe(data => {
+            this.orders = data.content;
+            this.currentPage = data.number + 1;
+            this.pageSize = data.size;
+            this.totalSize = data.totalElements;
+        });
+    }
+
+    changePageSize(event: Event) {
+        this.pageSize = +(event.target as HTMLInputElement).value;
+        this.currentPage = 1;
+        this.handleList()
+    }
 }

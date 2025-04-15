@@ -13,7 +13,7 @@ import ua.mike.ecommerce.services.PurchaseService;
 import static ua.mike.ecommerce.Constants.Version.V1;
 
 @RestController
-@RequestMapping(V1 + "/checkout")
+@RequestMapping(V1 + "checkout")
 @RequiredArgsConstructor
 public class PurchaseController {
 

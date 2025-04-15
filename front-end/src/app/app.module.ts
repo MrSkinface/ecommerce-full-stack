@@ -15,7 +15,6 @@ import {CartDetailsComponent} from './components/cart-details/cart-details.compo
 import {CheckoutComponent} from './components/checkout/checkout.component';
 import {ReactiveFormsModule} from "@angular/forms";
 
-import {MembersPageComponent} from './components/members-page/members-page.component';
 import {OrderHistoryComponent} from './components/order-history/order-history.component';
 import {GoogleSigninButtonModule, SocialLoginModule} from "@abacritt/angularx-social-login";
 import {authConfig} from "./auth-config";
@@ -25,7 +24,6 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
 
 const routes: Routes = [
     {path: 'orders-history', component: OrderHistoryComponent},
-    {path: 'members', component: MembersPageComponent},
     {path: 'search/:query', component: ProductListComponent},
     {path: 'category/:id', component: ProductListComponent},
     {path: 'category', component: ProductListComponent},
@@ -47,7 +45,6 @@ const routes: Routes = [
         CartStatusComponent,
         CartDetailsComponent,
         CheckoutComponent,
-        MembersPageComponent,
         OrderHistoryComponent,
         SignInComponent
     ],
