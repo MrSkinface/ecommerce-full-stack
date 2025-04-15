@@ -1,250 +1,168 @@
 <!-- MAIN CONTENT-->
 <div class="main-content page-m">
-  <div class="section-content section-content-p30">
-    <div class="container-fluid">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
 
-      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
-        <!-- customer form -->
-        <div formGroupName="customer" class="form-area">
-          <h3>Customer</h3>
-          <div class="row">
-            <div class="col-md-2"><label>First Name</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="firstName" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(firstName)" class="alert alert-danger mt-1">
-                  <div *ngIf="firstName?.errors?.['required']">First Name is required</div>
-                  <div *ngIf="firstName?.errors?.['blank']">First Name cannot be blank</div>
-                  <div *ngIf="firstName?.errors?.['minlength']">First Name should be at least 2 characters</div>
+                <!-- customer form -->
+                <div formGroupName="customer" class="form-area">
+                    <h3>Customer</h3>
+                    <div class="row">
+                        <div class="col-md-2"><label>First Name</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="firstName" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(firstName)" class="alert alert-danger mt-1">
+                                    <div *ngIf="firstName?.errors?.['required']">First Name is required</div>
+                                    <div *ngIf="firstName?.errors?.['blank']">First Name cannot be blank</div>
+                                    <div *ngIf="firstName?.errors?.['minlength']">First Name should be at least 2
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>Last Name</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="lastName" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(lastName)" class="alert alert-danger mt-1">
+                                    <div *ngIf="lastName?.errors?.['required']">Last Name is required</div>
+                                    <div *ngIf="lastName?.errors?.['blank']">Last Name cannot be blank</div>
+                                    <div *ngIf="lastName?.errors?.['minlength']">Last Name should be at least 2
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>E-Mail</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="email" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(email)" class="alert alert-danger mt-1">
+                                    <div *ngIf="email?.errors?.['required']">E-Mail is required</div>
+                                    <div *ngIf="email?.errors?.['pattern']">E-Mail should be valid format</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-2"><label>Last Name</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="lastName" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(lastName)" class="alert alert-danger mt-1">
-                  <div *ngIf="lastName?.errors?.['required']">Last Name is required</div>
-                  <div *ngIf="lastName?.errors?.['blank']">Last Name cannot be blank</div>
-                  <div *ngIf="lastName?.errors?.['minlength']">Last Name should be at least 2 characters</div>
-                </div>
-              </div>
-            </div>
-          </div>
+                <!-- shipping address form -->
+                <div formGroupName="shippingAddress" class="form-area">
+                    <h3>Shipping Address</h3>
+                    <div class="row">
+                        <div class="col-md-2"><label>Country</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="country" (change)="getStates()">
+                                    <option *ngFor="let country of countries" [ngValue]="country">
+                                        {{ country.name }}
+                                    </option>
+                                </select>
+                                <!-- validation -->
+                                <div *ngIf="invalid(shippingCountry)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingCountry?.errors?.['required']">Country is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-          <div class="row">
-            <div class="col-md-2"><label>E-Mail</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="email" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(email)" class="alert alert-danger mt-1">
-                  <div *ngIf="email?.errors?.['required']">E-Mail is required</div>
-                  <div *ngIf="email?.errors?.['pattern']">E-Mail should be valid format</div>
+                    <div class="row">
+                        <div class="col-md-2"><label>City</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="city" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(shippingCity)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingCity?.errors?.['required']">City is required</div>
+                                    <div *ngIf="shippingCity?.errors?.['minlength']">City name should have at least 2
+                                        characters
+                                    </div>
+                                    <div *ngIf="shippingCity?.errors?.['blank']">City cannot be blank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>Street</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="street" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(shippingStreet)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingStreet?.errors?.['required']">Street is required</div>
+                                    <div *ngIf="shippingStreet?.errors?.['minlength']">Street name should have at least
+                                        2 characters
+                                    </div>
+                                    <div *ngIf="shippingStreet?.errors?.['blank']">Street cannot be blank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>State</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="state">
+                                    <option *ngFor="let state of shippingStates" [ngValue]="state">
+                                        {{ state.name }}
+                                    </option>
+                                </select>
+                                <!-- validation -->
+                                <div *ngIf="invalid(shippingState)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingState?.errors?.['required']">State is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>Zip Code</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="zip" type="text">
+                                <!-- validation -->
+                                <div *ngIf="invalid(shippingZip)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingZip?.errors?.['required']">Zip code is required</div>
+                                    <div *ngIf="shippingZip?.errors?.['minlength']">Zip code name should have at least 2
+                                        characters
+                                    </div>
+                                    <div *ngIf="shippingZip?.errors?.['blank']">Zip code cannot be blank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-              </div>
-            </div>
-          </div>
+
+                <!-- order details -->
+                <div class="form-area">
+                    <h3>Review Your Order</h3>
+                    <p>Total Quantity: {{ totalQty }}</p>
+                    <p><b>Shipping: FREE</b></p>
+                    <p>Total Price: {{ totalPrice.toFixed(2) }}</p>
+                </div>
+
+                <!-- submit -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-info" [disabled]="!isEnabled">Purchase</button>
+                </div>
+
+            </form>
 
         </div>
-
-        <!-- shipping address form -->
-        <div formGroupName="shippingAddress" class="form-area">
-          <h3>Shipping Address</h3>
-          <div class="row">
-            <div class="col-md-2"><label>Country</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <select formControlName="country" (change)="getStates('shippingAddress')">
-                  <option *ngFor="let country of countries" [ngValue]="country">
-                    {{ country.name }}
-                  </option>
-                </select>
-                <!-- validation -->
-                <div *ngIf="invalid(shippingCountry)" class="alert alert-danger mt-1">
-                  <div *ngIf="shippingCountry?.errors?.['required']">Country is required</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>City</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="city" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(shippingCity)" class="alert alert-danger mt-1">
-                  <div *ngIf="shippingCity?.errors?.['required']">City is required</div>
-                  <div *ngIf="shippingCity?.errors?.['minlength']">City name should have at least 2 characters</div>
-                  <div *ngIf="shippingCity?.errors?.['blank']">City cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>Street</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="street" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(shippingStreet)" class="alert alert-danger mt-1">
-                  <div *ngIf="shippingStreet?.errors?.['required']">Street is required</div>
-                  <div *ngIf="shippingStreet?.errors?.['minlength']">Street name should have at least 2 characters</div>
-                  <div *ngIf="shippingStreet?.errors?.['blank']">Street cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>State</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <select formControlName="state">
-                  <option *ngFor="let state of shippingStates" [ngValue]="state">
-                    {{ state.name }}
-                  </option>
-                </select>
-                <!-- validation -->
-                <div *ngIf="invalid(shippingState)" class="alert alert-danger mt-1">
-                  <div *ngIf="shippingState?.errors?.['required']">State is required</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>Zip Code</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="zip" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(shippingZip)" class="alert alert-danger mt-1">
-                  <div *ngIf="shippingZip?.errors?.['required']">Zip code is required</div>
-                  <div *ngIf="shippingZip?.errors?.['minlength']">Zip code name should have at least 2 characters</div>
-                  <div *ngIf="shippingZip?.errors?.['blank']">Zip code cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- auto copy shipping to billing -->
-        <div class="input-space">
-          <label class="au-checkbox">
-            <input type="checkbox" (change)="copyAddressShippingToBilling($event)">
-            <span class="au-checkmark"></span>Billing address same as shipping address
-          </label>
-        </div>
-
-        <!-- billing address form -->
-        <div formGroupName="billingAddress" class="form-area">
-          <h3>Billing Address</h3>
-          <div class="row">
-            <div class="col-md-2"><label>Country</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <select formControlName="country" (change)="getStates('billingAddress')">
-                  <option *ngFor="let country of countries" [ngValue]="country">
-                    {{ country.name }}
-                  </option>
-                </select>
-                <!-- validation -->
-                <div *ngIf="invalid(billingCountry)" class="alert alert-danger mt-1">
-                  <div *ngIf="billingCountry?.errors?.['required']">Country is required</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>City</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="city" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(billingCity)" class="alert alert-danger mt-1">
-                  <div *ngIf="billingCity?.errors?.['required']">City is required</div>
-                  <div *ngIf="billingCity?.errors?.['minlength']">City name should have at least 2 characters</div>
-                  <div *ngIf="billingCity?.errors?.['blank']">City cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>Street</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="street" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(billingStreet)" class="alert alert-danger mt-1">
-                  <div *ngIf="billingStreet?.errors?.['required']">Street is required</div>
-                  <div *ngIf="billingStreet?.errors?.['minlength']">Street name should have at least 2 characters</div>
-                  <div *ngIf="billingStreet?.errors?.['blank']">Street cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>State</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <select formControlName="state">
-                  <option *ngFor="let state of billingStates" [ngValue]="state">
-                    {{ state.name }}
-                  </option>
-                </select>
-                <!-- validation -->
-                <div *ngIf="invalid(billingState)" class="alert alert-danger mt-1">
-                  <div *ngIf="billingState?.errors?.['required']">State is required</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"><label>Zip Code</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input formControlName="zip" type="text">
-                <!-- validation -->
-                <div *ngIf="invalid(billingZip)" class="alert alert-danger mt-1">
-                  <div *ngIf="billingZip?.errors?.['required']">Zip code is required</div>
-                  <div *ngIf="billingZip?.errors?.['minlength']">Zip code name should have at least 2 characters</div>
-                  <div *ngIf="billingZip?.errors?.['blank']">Zip code cannot be blank</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- order details -->
-        <div class="form-area">
-          <h3>Review Your Order</h3>
-          <p>Total Quantity: {{ totalQty }}</p>
-          <p><b>Shipping: FREE</b></p>
-          <p>Total Price: {{ totalPrice.toFixed(2) }}</p>
-        </div>
-
-        <!-- submit -->
-        <div class="text-center">
-          <button type="submit" class="btn btn-info" [disabled]="!isEnabled">Purchase</button>
-        </div>
-
-      </form>
-
     </div>
-  </div>
 </div>

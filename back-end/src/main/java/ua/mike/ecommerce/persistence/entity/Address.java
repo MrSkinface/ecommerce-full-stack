@@ -1,12 +1,19 @@
 package ua.mike.ecommerce.persistence.entity;
 
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Table
 @Data
@@ -34,11 +41,6 @@ public class Address extends BaseEntity {
     @Column(name = "zip_code")
     private String zip;
 
-    @OneToMany(mappedBy = "billingAddress")
-    @Builder.Default
-    private Set<Order> billing = new HashSet<>();
-
-    @OneToMany(mappedBy = "shippingAddress")
-    @Builder.Default
-    private Set<Order> shipping = new HashSet<>();
+    @OneToOne(mappedBy = "shippingAddress")
+    private Order order;
 }

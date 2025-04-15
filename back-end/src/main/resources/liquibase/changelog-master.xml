@@ -13,5 +13,6 @@
     <include file="liquibase/sql/ISSUE-36_init_data_for_products.sql"/>
     <include file="liquibase/sql/ISSUE-36_init_data_for_countries.sql"/>
     <include file="liquibase/sql/ISSUE-36_init_data_for_states.sql"/>
+    <include file="liquibase/sql/ISSUE-41_refactor_checkout_procedure.sql"/>
 
 </databaseChangeLog>
