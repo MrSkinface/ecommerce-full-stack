@@ -11,10 +11,10 @@ import ua.mike.ecommerce.web.dto.StateDto;
 
 import java.util.Set;
 
-import static ua.mike.ecommerce.Constants.API_VERSION;
+import static ua.mike.ecommerce.Constants.Version.V1;
 
 @RestController
-@RequestMapping(API_VERSION + "countries")
+@RequestMapping(V1 + "countries")
 @RequiredArgsConstructor
 public class CountryController {
 

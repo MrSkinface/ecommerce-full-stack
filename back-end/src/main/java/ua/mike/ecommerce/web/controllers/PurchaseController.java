@@ -10,10 +10,10 @@ import ua.mike.ecommerce.web.dto.Purchase;
 import ua.mike.ecommerce.web.dto.PurchaseResponse;
 import ua.mike.ecommerce.services.PurchaseService;
 
-import static ua.mike.ecommerce.Constants.API_VERSION;
+import static ua.mike.ecommerce.Constants.Version.V1;
 
 @RestController
-@RequestMapping(API_VERSION + "/checkout")
+@RequestMapping(V1 + "/checkout")
 @RequiredArgsConstructor
 public class PurchaseController {
 

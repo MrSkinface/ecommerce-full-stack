@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {ProductListComponent} from './components/product-list/product-list.component';
-import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {ProductService} from "./services/product.service";
 import {RouterModule, Routes} from "@angular/router";
 import {ProductCategoryMenuComponent} from './components/product-category-menu/product-category-menu.component';
@@ -21,6 +21,7 @@ import {GoogleSigninButtonModule, SocialLoginModule} from "@abacritt/angularx-so
 import {authConfig} from "./auth-config";
 import {SignInComponent} from "./components/sign-in/sign-in.component";
 import {NgOptimizedImage} from "@angular/common";
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
 
 const routes: Routes = [
     {path: 'orders-history', component: OrderHistoryComponent},
@@ -59,6 +60,11 @@ const routes: Routes = [
         {
             provide: 'SocialAuthServiceConfig',
             useValue: authConfig,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
         },
         provideHttpClient(withInterceptorsFromDi())
     ]

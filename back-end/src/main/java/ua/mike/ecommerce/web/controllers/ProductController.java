@@ -14,10 +14,10 @@ import ua.mike.ecommerce.web.dto.ProductDto;
 
 import java.util.Set;
 
-import static ua.mike.ecommerce.Constants.API_VERSION;
+import static ua.mike.ecommerce.Constants.Version.V1;
 
 @RestController
-@RequestMapping(API_VERSION + "products")
+@RequestMapping(V1 + "products")
 @RequiredArgsConstructor
 public class ProductController {
 
