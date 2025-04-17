@@ -1,8 +1,8 @@
 import {Address} from "./address";
-import {OrderItem} from "./order-item";
+import {PurchaseItem} from "./purchase-item";
 
 export class Purchase {
 
   shippingAddress!: Address;
-  items!: OrderItem[];
+  items!: PurchaseItem[];
 }

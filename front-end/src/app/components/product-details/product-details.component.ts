@@ -15,10 +15,10 @@ export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();
 
-  constructor(private products: ProductService,
-              private cart: CartService,
-              private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(private readonly products: ProductService,
+              private readonly cart: CartService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
