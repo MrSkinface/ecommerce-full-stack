@@ -21,10 +21,12 @@ import {authConfig} from "./auth-config";
 import {SignInComponent} from "./components/sign-in/sign-in.component";
 import {NgOptimizedImage} from "@angular/common";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import {OrderDetailsComponent} from "./components/order-details/order-details.component";
 
 const routes: Routes = [
     {path: 'orders-history', component: OrderHistoryComponent},
     {path: 'search/:query', component: ProductListComponent},
+    {path: 'orders/:id', component: OrderDetailsComponent},
     {path: 'category/:id', component: ProductListComponent},
     {path: 'category', component: ProductListComponent},
     {path: 'products', component: ProductListComponent},

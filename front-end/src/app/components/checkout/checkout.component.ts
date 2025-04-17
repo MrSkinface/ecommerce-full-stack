@@ -6,7 +6,7 @@ import {CountryService} from "../../services/country.service";
 import {State} from "../../common/state";
 import {CartService} from "../../services/cart.service";
 import {Router} from "@angular/router";
-import {OrderItem} from "../../common/order-item";
+import {PurchaseItem} from "../../common/purchase-item";
 import {OrdersService} from "../../services/orders.service";
 
 @Component({
@@ -125,7 +125,7 @@ export class CheckoutComponent implements OnInit {
     onSubmit() {
         if (this.formGroup.valid) {
             this.isEnabled = false;
-            let items = this.cartService.items.map(item => new OrderItem(item));
+            let items = this.cartService.items.map(item => new PurchaseItem(item));
             let shippingAddress = this.formGroup.controls['shippingAddress'].value;
 
             this.ordersService.placeOrder({shippingAddress: shippingAddress, items: items}).subscribe({

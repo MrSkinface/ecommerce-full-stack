@@ -14,6 +14,7 @@ import ua.mike.ecommerce.persistence.repository.CountryRepository;
 import ua.mike.ecommerce.persistence.repository.OrderRepository;
 import ua.mike.ecommerce.persistence.repository.ProductRepository;
 import ua.mike.ecommerce.persistence.repository.StateRepository;
+import ua.mike.ecommerce.web.dto.OrderDetailsDto;
 import ua.mike.ecommerce.web.dto.OrderDto;
 import ua.mike.ecommerce.web.dto.PurchaseAddressDto;
 import ua.mike.ecommerce.web.dto.PurchaseOrderItemDto;
@@ -40,6 +41,14 @@ public class OrderService {
         final var pageable = PageRequest.of(page, size, Sort.by("dateCreated").descending());
         return orderRepository.findAllByCustomerId(customerId, pageable)
                 .map(orderMapper::convert);
+    }
+
+    @Transactional
+    public OrderDetailsDto getOrderDetails(Long customerId, Long orderId) {
+        return orderRepository.findByCustomerIdAndId(customerId, orderId)
+                .map(orderMapper::toDetails)
+                .orElseThrow(() -> new NotFoundException(orderId));
+
     }
 
     @Transactional
