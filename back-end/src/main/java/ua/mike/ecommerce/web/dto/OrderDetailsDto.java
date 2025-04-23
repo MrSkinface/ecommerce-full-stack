@@ -9,5 +9,6 @@ import java.util.List;
 @Builder
 public record OrderDetailsDto(Long id, String trackingNumber, BigDecimal totalPrice, int totalQuantity, LocalDateTime dateCreated, List<OrderItemDto> items) {
 
+    @Builder
     public record OrderItemDto(String name, String imageUrl, int quantity, BigDecimal unitPrice) { }
 }
