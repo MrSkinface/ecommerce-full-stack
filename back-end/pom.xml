@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <coverage.min>0.9</coverage.min>
     </properties>
 
     <dependencies>
@@ -202,8 +203,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <!-- todo: make 85% at least -->
-                                            <minimum>0</minimum>
+                                            <minimum>${coverage.min}</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

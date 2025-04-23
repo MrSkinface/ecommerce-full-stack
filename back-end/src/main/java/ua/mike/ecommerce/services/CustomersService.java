@@ -14,11 +14,11 @@ import ua.mike.ecommerce.web.exception.NotAcceptableException;
 @RequiredArgsConstructor
 public class CustomersService {
 
-    private static final String ACCEPTABLE_ISSUER = "https://accounts.google.com";
+    static final String ACCEPTABLE_ISSUER = "https://accounts.google.com";
 
-    private static final String E_MAIL = "email";
-    private static final String FIRST_NAME = "given_name";
-    private static final String SECOND_NAME = "family_name";
+    static final String E_MAIL = "email";
+    static final String FIRST_NAME = "given_name";
+    static final String SECOND_NAME = "family_name";
 
     private final CustomerRepository customerRepository;
 
