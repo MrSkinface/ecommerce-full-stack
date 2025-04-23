@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.8
+  codecov: codecov/codecov@5.3.0
 jobs:
   verify-back-end:
     docker:
@@ -10,6 +11,7 @@ jobs:
       - run:
           name: Verify
           command: mvn -B -f ./back-end/pom.xml clean verify
+      - codecov/upload
 
   verify-front-end:
     working_directory: ~/e-commerce-full-stack
