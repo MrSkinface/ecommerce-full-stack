@@ -169,6 +169,13 @@
                         <configuration>
                             <excludes>
                                 <!-- exclusions goes here -->
+                                <exclude>ua/mike/ecommerce/BackEndApp.class</exclude>
+                                <exclude>ua/mike/ecommerce/Constants**</exclude>
+                                <exclude>**/config/**</exclude>
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/mapper/**</exclude>
+                                <exclude>**/exception/**</exclude>
+                                <exclude>**/persistence/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -180,6 +187,13 @@
                         <configuration>
                             <excludes>
                                 <!-- exclusions goes here -->
+                                <exclude>ua/mike/ecommerce/BackEndApp.class</exclude>
+                                <exclude>ua/mike/ecommerce/Constants**</exclude>
+                                <exclude>**/config/**</exclude>
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/mapper/**</exclude>
+                                <exclude>**/exception/**</exclude>
+                                <exclude>**/persistence/**</exclude>
                             </excludes>
                             <rules>
                                 <rule>
