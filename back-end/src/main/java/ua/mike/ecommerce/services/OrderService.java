@@ -70,7 +70,7 @@ public class OrderService {
         var country = countryRepository.findById(address.country().id())
                 .orElseThrow(() -> new NotFoundException(address.country().id()));
         var state = stateRepository.findById(address.state().id())
-                .orElseThrow(() -> new NotFoundException(address.country().id()));
+                .orElseThrow(() -> new NotFoundException(address.state().id()));
         return Address.builder()
                 .country(country)
                 .state(state)
