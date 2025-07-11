@@ -6,6 +6,9 @@ server:
   shutdown: graceful
 
 spring:
+  threads:
+    virtual:
+      enabled: true
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   datasource:
@@ -72,9 +75,11 @@ logging:
 
 logbook:
   format:
-    style: splunk
+    style: http
   predicate:
     exclude:
       - path: /actuator**
       - path: ${springdoc.api-docs.path}**
       - path: ${springdoc.swagger-ui.path}**
+  minimum-status: 400
+  strategy: status-at-least
