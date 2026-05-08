@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import ua.mike.ecommerce.persistence.entity.Product;
 
-import static org.springframework.data.jpa.domain.Specification.where;
+import static org.springframework.data.jpa.domain.Specification.unrestricted;
 
 public class ProductSpecification {
 
@@ -32,7 +32,7 @@ public class ProductSpecification {
         }
 
         public Specification<Product> build() {
-            Specification<Product> specification = where(null);
+            Specification<Product> specification = unrestricted();
             if (categoryId != null) {
                 specification = specification.and((product, cq, cb) ->
                         cb.equal(product.get("category").get("id"), categoryId));
